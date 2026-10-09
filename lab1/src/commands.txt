@@ -1,0 +1,44 @@
+# Lab1 commands
+
+# --- Arch ---
+sudo pacman -S --noconfirm bc
+
+./background.sh &
+echo "sample text" > sample.txt
+cat sample.txt
+clear
+wc -m sample.txt
+
+cat cake_rhymes.txt | grep cake > with_cake.txt
+rm nonexistent.txt 2>/dev/null
+
+chmod +x hello.sh
+./hello.sh
+chmod +x info.sh
+./info.sh
+
+chmod +x average.sh
+od -An -tu2 -N300 /dev/random | tr -s '[:space:]' '\n' | grep -E '^[0-9]+$' | head -n 150 > numbers.txt
+./average.sh $(cat numbers.txt)
+
+# --- Ubuntu ---
+sudo apt -y update
+sudo apt -y install bc
+
+./background.sh &
+echo "sample text" > sample.txt
+cat sample.txt
+clear
+wc -m sample.txt
+
+cat cake_rhymes.txt | grep cake > with_cake.txt
+rm nonexistent.txt 2>/dev/null
+
+chmod +x hello.sh
+./hello.sh
+chmod +x info.sh
+./info.sh
+
+chmod +x average.sh
+od -An -tu2 -N300 /dev/random | tr -s '[:space:]' '\n' | grep -E '^[0-9]+$' | head -n 150 > numbers.txt
+./average.sh $(cat numbers.txt)
