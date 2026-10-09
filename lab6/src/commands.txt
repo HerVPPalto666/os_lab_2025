@@ -1,0 +1,26 @@
+# Lab6 commands
+
+# --- Arch ---
+sudo pacman -S --noconfirm gcc make
+
+cd lab6/src
+make all
+./server --port 20001 --tnum 4 &
+./server --port 20002 --tnum 4 &
+sleep 1
+./client --k 10 --mod 10 --servers ./servers.txt
+kill %1 %2 2>/dev/null
+make clean
+
+# --- Ubuntu ---
+sudo apt -y update
+sudo apt -y install gcc make
+
+cd lab6/src
+make all
+./server --port 20001 --tnum 4 &
+./server --port 20002 --tnum 4 &
+sleep 1
+./client --k 10 --mod 10 --servers ./servers.txt
+kill %1 %2 2>/dev/null
+make clean
