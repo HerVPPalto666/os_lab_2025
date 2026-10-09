@@ -1,0 +1,34 @@
+# Lab7 commands
+
+# --- Arch ---
+sudo pacman -S --noconfirm gcc make
+
+cd lab7/src
+make all
+./tcpserver 10050 100 &
+sleep 1
+printf 'hello tcp\n' | ./tcpclient 127.0.0.1 10050 100
+kill %1 2>/dev/null
+
+./udpserver 20001 1024 &
+sleep 1
+printf 'hello udp\n' | ./udpclient 127.0.0.1 20001 1024
+kill %1 2>/dev/null
+make clean
+
+# --- Ubuntu ---
+sudo apt -y update
+sudo apt -y install gcc make
+
+cd lab7/src
+make all
+./tcpserver 10050 100 &
+sleep 1
+printf 'hello tcp\n' | ./tcpclient 127.0.0.1 10050 100
+kill %1 2>/dev/null
+
+./udpserver 20001 1024 &
+sleep 1
+printf 'hello udp\n' | ./udpclient 127.0.0.1 20001 1024
+kill %1 2>/dev/null
+make clean

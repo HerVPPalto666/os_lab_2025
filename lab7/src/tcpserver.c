@@ -7,28 +7,49 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define SERV_PORT 10050
-#define BUFSIZE 100
 #define SADDR struct sockaddr
 
-int main() {
+int main(int argc, char *argv[]) {
   const size_t kSize = sizeof(struct sockaddr_in);
 
   int lfd, cfd;
   int nread;
-  char buf[BUFSIZE];
+  int port;
+  int bufsize;
+  char *buf;
   struct sockaddr_in servaddr;
   struct sockaddr_in cliaddr;
+
+  if (argc < 3) {
+    printf("Usage: %s <port> <bufsize>\n", argv[0]);
+    exit(1);
+  }
+
+  port = atoi(argv[1]);
+  bufsize = atoi(argv[2]);
+  if (port <= 0 || bufsize <= 0) {
+    printf("port and bufsize must be positive\n");
+    exit(1);
+  }
+
+  buf = malloc(bufsize);
+  if (buf == NULL) {
+    perror("malloc");
+    exit(1);
+  }
 
   if ((lfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("socket");
     exit(1);
   }
 
+  int opt_val = 1;
+  setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &opt_val, sizeof(opt_val));
+
   memset(&servaddr, 0, kSize);
   servaddr.sin_family = AF_INET;
   servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-  servaddr.sin_port = htons(SERV_PORT);
+  servaddr.sin_port = htons(port);
 
   if (bind(lfd, (SADDR *)&servaddr, kSize) < 0) {
     perror("bind");
@@ -49,8 +70,8 @@ int main() {
     }
     printf("connection established\n");
 
-    while ((nread = read(cfd, buf, BUFSIZE)) > 0) {
-      write(1, &buf, nread);
+    while ((nread = read(cfd, buf, bufsize)) > 0) {
+      write(1, buf, nread);
     }
 
     if (nread == -1) {
@@ -59,4 +80,6 @@ int main() {
     }
     close(cfd);
   }
+
+  free(buf);
 }
