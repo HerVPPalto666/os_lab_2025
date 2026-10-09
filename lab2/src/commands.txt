@@ -1,0 +1,57 @@
+# Lab2 build commands
+
+# --- Arch ---
+sudo pacman -S --noconfirm gcc cunit
+
+cd lab2/src/swap
+gcc main.c swap.c -o swap
+./swap
+
+cd ../revert_string
+gcc main.c revert_string.c -o revert_string
+./revert_string "Hello"
+
+gcc -c revert_string.c -o revert_string.o
+ar rcs librevert.a revert_string.o
+gcc main.c -L. -lrevert -o revert_static
+
+gcc -c -fPIC revert_string.c -o revert_string_pic.o
+gcc -shared -o librevert.so revert_string_pic.o
+gcc main.c -L. -lrevert -o revert_dynamic
+export LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH
+./revert_static "Hello"
+./revert_dynamic "Hello"
+
+cd ../tests
+gcc tests.c -I../revert_string -L../revert_string -lrevert -lcunit -o tests
+export LD_LIBRARY_PATH=../revert_string:$LD_LIBRARY_PATH
+./tests
+
+# --- Ubuntu ---
+sudo apt -y update
+sudo apt -y install gcc
+sudo apt -y install libcunit1 libcunit1-doc libcunit1-dev
+
+cd lab2/src/swap
+gcc main.c swap.c -o swap
+./swap
+
+cd ../revert_string
+gcc main.c revert_string.c -o revert_string
+./revert_string "Hello"
+
+gcc -c revert_string.c -o revert_string.o
+ar rcs librevert.a revert_string.o
+gcc main.c -L. -lrevert -o revert_static
+
+gcc -c -fPIC revert_string.c -o revert_string_pic.o
+gcc -shared -o librevert.so revert_string_pic.o
+gcc main.c -L. -lrevert -o revert_dynamic
+export LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH
+./revert_static "Hello"
+./revert_dynamic "Hello"
+
+cd ../tests
+gcc tests.c -I../revert_string -L../revert_string -lrevert -lcunit -o tests
+export LD_LIBRARY_PATH=../revert_string:$LD_LIBRARY_PATH
+./tests
