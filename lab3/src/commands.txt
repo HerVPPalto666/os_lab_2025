@@ -1,0 +1,24 @@
+# Lab3 commands
+
+# --- Arch ---
+sudo pacman -S --noconfirm gcc make
+
+cd lab3/src
+make all
+./sequential_min_max 42 10000
+./parallel_min_max --seed 42 --array_size 10000 --pnum 4
+./parallel_min_max --seed 42 --array_size 10000 --pnum 4 --by_files
+./exec_sequential_min_max 42 10000
+make clean
+
+# --- Ubuntu ---
+sudo apt -y update
+sudo apt -y install gcc make
+
+cd lab3/src
+make all
+./sequential_min_max 42 10000
+./parallel_min_max --seed 42 --array_size 10000 --pnum 4
+./parallel_min_max --seed 42 --array_size 10000 --pnum 4 --by_files
+./exec_sequential_min_max 42 10000
+make clean
