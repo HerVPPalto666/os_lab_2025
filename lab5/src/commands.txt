@@ -1,0 +1,24 @@
+# Lab5 commands
+
+# --- Arch ---
+sudo pacman -S --noconfirm gcc make
+
+cd lab5/src
+make all
+./mutex_without | tail -1
+./mutex_with | tail -1
+./factorial -k 10 --pnum=4 --mod=10
+./deadlock
+make clean
+
+# --- Ubuntu ---
+sudo apt -y update
+sudo apt -y install gcc make
+
+cd lab5/src
+make all
+./mutex_without | tail -1
+./mutex_with | tail -1
+./factorial -k 10 --pnum=4 --mod=10
+./deadlock
+make clean

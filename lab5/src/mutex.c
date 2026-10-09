@@ -1,15 +1,3 @@
-/********************************************************
- * An example source module to accompany...
- *
- * "Using POSIX Threads: Programming with Pthreads"
- *     by Brad nichols, Dick Buttlar, Jackie Farrell
- *     O'Reilly & Associates, Inc.
- *  Modified by A.Kostin
- ********************************************************
- * mutex.c
- *
- * Simple multi-threaded example with a mutex lock.
- */
 #include <errno.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -18,7 +6,7 @@
 void do_one_thing(int *);
 void do_another_thing(int *);
 void do_wrap_up(int);
-int common = 0; /* A shared variable for two threads */
+int common = 0;
 int r1 = 0, r2 = 0, r3 = 0;
 pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
 
@@ -26,7 +14,7 @@ int main() {
   pthread_t thread1, thread2;
 
   if (pthread_create(&thread1, NULL, (void *)do_one_thing,
-			  (void *)&common) != 0) {
+                     (void *)&common) != 0) {
     perror("pthread_create");
     exit(1);
   }
@@ -53,40 +41,47 @@ int main() {
 }
 
 void do_one_thing(int *pnum_times) {
-  int i, j, x;
+  int i;
   unsigned long k;
   int work;
   for (i = 0; i < 50; i++) {
-    // pthread_mutex_lock(&mut);
+#ifdef USE_MUTEX
+    pthread_mutex_lock(&mut);
+#endif
     printf("doing one thing\n");
     work = *pnum_times;
     printf("counter = %d\n", work);
-    work++; /* increment, but not write */
+    work++;
     for (k = 0; k < 500000; k++)
-      ;                 /* long cycle */
-    *pnum_times = work; /* write back */
-	// pthread_mutex_unlock(&mut);
+      ;
+    *pnum_times = work;
+#ifdef USE_MUTEX
+    pthread_mutex_unlock(&mut);
+#endif
   }
 }
 
 void do_another_thing(int *pnum_times) {
-  int i, j, x;
+  int i;
   unsigned long k;
   int work;
   for (i = 0; i < 50; i++) {
-    // pthread_mutex_lock(&mut);
+#ifdef USE_MUTEX
+    pthread_mutex_lock(&mut);
+#endif
     printf("doing another thing\n");
     work = *pnum_times;
     printf("counter = %d\n", work);
-    work++; /* increment, but not write */
+    work++;
     for (k = 0; k < 500000; k++)
-      ;                 /* long cycle */
-    *pnum_times = work; /* write back */
-    // pthread_mutex_unlock(&mut);
+      ;
+    *pnum_times = work;
+#ifdef USE_MUTEX
+    pthread_mutex_unlock(&mut);
+#endif
   }
 }
 
 void do_wrap_up(int counter) {
-  int total;
   printf("All done, counter = %d\n", counter);
 }
