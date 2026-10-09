@@ -1,0 +1,29 @@
+# Lab0 commands
+
+# --- Arch ---
+sudo pacman -Syu
+sudo pacman -S --noconfirm gcc iputils
+
+mkdir -p lab0/hello
+touch lab0/hello/empty
+cp lab0/src/hello.c lab0/hello/newhello.c
+cd lab0/hello
+gcc newhello.c -o hello_world
+./hello_world
+ping ya.ru -c 5
+gcc -v
+
+# --- Ubuntu ---
+sudo apt -y update
+sudo apt -y upgrade
+sudo apt -y install gcc
+sudo apt -y install iputils-ping
+
+mkdir -p lab0/hello
+touch lab0/hello/empty
+cp lab0/src/hello.c lab0/hello/newhello.c
+cd lab0/hello
+gcc newhello.c -o hello_world
+./hello_world
+ping ya.ru -c 5
+gcc -v
