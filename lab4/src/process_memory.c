@@ -15,10 +15,10 @@ extern int etext, edata, end; /* Global variables for process
 
 char *cptr = "This message is output by the function showit()\n"; /* Static */
 char buffer1[25];
-int showit(); /* Function prototype */
+int showit(char *p);
 
-main() {
-  int i = 0; /* Automatic variable */
+int main() {
+  int i = 0;
 
   /* Printing addressing information */
   printf("\nAddress etext: %8X \n", &etext);
@@ -34,20 +34,19 @@ main() {
   write(1, buffer1, strlen(buffer1) + 1); /* System call */
   showit(cptr);
 
-} /* end of main function */
+}
 
-/* A function follows */
-int showit(p) char *p;
-{
+int showit(char *p) {
   char *buffer2;
   SHW_ADR("buffer2", buffer2);
   if ((buffer2 = (char *)malloc((unsigned)(strlen(p) + 1))) != NULL) {
     printf("Alocated memory at %X\n", buffer2);
-    strcpy(buffer2, p);    /* copy the string */
-    printf("%s", buffer2); /* Didplay the string */
-    free(buffer2);         /* Release location */
+    strcpy(buffer2, p);
+    printf("%s", buffer2);
+    free(buffer2);
   } else {
     printf("Allocation error\n");
     exit(1);
   }
+  return 0;
 }

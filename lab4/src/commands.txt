@@ -1,0 +1,30 @@
+# Lab4 commands
+
+# --- Arch ---
+sudo pacman -S --noconfirm gcc make
+
+cd lab4/src
+make all
+./parallel_min_max --seed 42 --array_size 10000000 --pnum 4
+./parallel_min_max --seed 42 --array_size 10000000 --pnum 4 --timeout 10
+./process_memory
+./parallel_sum --threads_num 4 --seed 42 --array_size 10000000
+./zombie &
+sleep 1
+ps -o pid,ppid,stat,cmd | grep -E 'Z|zombie'
+make clean
+
+# --- Ubuntu ---
+sudo apt -y update
+sudo apt -y install gcc make
+
+cd lab4/src
+make all
+./parallel_min_max --seed 42 --array_size 10000000 --pnum 4
+./parallel_min_max --seed 42 --array_size 10000000 --pnum 4 --timeout 10
+./process_memory
+./parallel_sum --threads_num 4 --seed 42 --array_size 10000000
+./zombie &
+sleep 1
+ps -o pid,ppid,stat,cmd | grep -E 'Z|zombie'
+make clean
